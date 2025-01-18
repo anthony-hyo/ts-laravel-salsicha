@@ -32,9 +32,28 @@
 			flex-direction: column;
 			align-items: center;
 			background: #252525;
-			padding: 15px;
+			padding: 20px 10px;
 			gap: 15px;
 			z-index: 2;
+			overflow-y: auto;
+			max-height: 100vh;
+			width: 100px; /* Optional: Adjust sidebar width */
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+			scroll-behavior: smooth;
+		}
+
+		.sidebar::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		.sidebar::-webkit-scrollbar-thumb {
+			background-color: #ff5722;
+			border-radius: 10px;
+		}
+
+		.sidebar::-webkit-scrollbar-track {
+			background: rgba(0, 0, 0, 0.2);
 		}
 
 		.sidebar img {
