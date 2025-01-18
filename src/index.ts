@@ -146,7 +146,7 @@ interface IServer {
 
 Promise
 	.all(servers.map((url): Promise<IServer> => getServerData(url)))
-	.finally((): void => start());
+	.finally(start);
 
 const filePath: string = path.resolve("src/public/index.html");
 
