@@ -38,7 +38,7 @@ const servers: IServer[] = [
 	},
 	{
 		url: "https://augo.pw/",
-		name: "",
+		name: "Augoeides",
 		description: "",
 		logo: "https://augo.pw/assets/images/logo.png",
 		logoMini: "https://augo.pw/assets/media/logos/favicon.ico",

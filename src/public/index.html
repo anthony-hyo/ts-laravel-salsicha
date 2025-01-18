@@ -104,7 +104,8 @@
 			width: 50%;
 		}
 
-		.game-content button {
+		.game-content button,
+		.game-content-list button {
 			background: linear-gradient(45deg, #ff5722, #ff9100);
 			color: #fff;
 			border: none;
@@ -115,7 +116,8 @@
 			transition: background 0.3s;
 		}
 
-		.game-content button:hover {
+		.game-content button:hover,
+		.game-content-list button:hover {
 			background: linear-gradient(45deg, #ff9100, #ff5722);
 		}
 
@@ -143,9 +145,10 @@
 			width: 200px;
 			text-align: center;
 		}
+
 		.game-card img {
-			width: 100px;
-			height: 100px;
+			width: auto;
+			height: 60px;
 			border-radius: 10px;
 		}
 
@@ -308,7 +311,7 @@
 			card.innerHTML = `
 		        <img src="${game.logoMini}" alt="${game.name}">
 		        <h3>${game.name}</h3>
-		        <p>${game.description}</p>
+				<button style="background:${game.themeColor}">Play Now</button>
 		    `;
 			gameCards.appendChild(card);
 		});
