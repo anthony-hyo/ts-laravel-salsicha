@@ -2,19 +2,19 @@ import {serve} from "bun";
 import path from "path";
 
 async function getMetaData(url: string): Promise<Record<string, string>> {
-	const response = await fetch(url);
-	const html = await response.text();
+	const response: Response = await fetch(url);
+	const html: string = await response.text();
 
-	const metaTags = html.match(/<meta[^>]*>/g) || [];
-	const bodyBgMatch = html.match(/body\s*{[^}]*background-image\s*:\s*url\(["']([^"']+)["']\)[^}]*}/);
-	const logoMiniMatch = html.match(/<nav[^>]*>[\s\S]*?<img[^>]*src=["']([^"']+)["'][^>]*alt=["'][^"']*Logo mini["']/);
-	const headerLogoMatch = html.match(/<header[^>]*>[\s\S]*?<img[^>]*src=["']([^"']+)["'][^>]*alt=["'][^"']*Logo["']/);
+	const metaTags: any[] = html.match(/<meta[^>]*>/g) || [];
+	const bodyBgMatch: RegExpMatchArray | null = html.match(/body\s*{[^}]*background-image\s*:\s*url\(["']([^"']+)["']\)[^}]*}/);
+	const logoMiniMatch: RegExpMatchArray | null = html.match(/<nav[^>]*>[\s\S]*?<img[^>]*src=["']([^"']+)["'][^>]*alt=["'][^"']*Logo mini["']/);
+	const headerLogoMatch: RegExpMatchArray | null = html.match(/<header[^>]*>[\s\S]*?<img[^>]*src=["']([^"']+)["'][^>]*alt=["'][^"']*Logo["']/);
 
-	const background = bodyBgMatch ? bodyBgMatch[1] : "";
-	const logoMini = logoMiniMatch ? logoMiniMatch[1] : "";
-	const logo = headerLogoMatch ? headerLogoMatch[1] : "";
+	const background: string = bodyBgMatch ? bodyBgMatch[1] : "";
+	const logoMini: string = logoMiniMatch ? logoMiniMatch[1] : "";
+	const logo: string = headerLogoMatch ? headerLogoMatch[1] : "";
 
-	const metaData: Record<string, string> = { background, logo, "logo-mini": logoMini };
+	const metaData: Record<string, string> = {background, logo, "logo-mini": logoMini};
 
 	metaTags.forEach(tag => {
 		const nameMatch = tag.match(/(name|property)=["']([^"']+)["']/);
@@ -23,8 +23,6 @@ async function getMetaData(url: string): Promise<Record<string, string>> {
 			metaData[nameMatch[2]] = contentMatch[1];
 		}
 	});
-
-	console.log(metaData)
 
 	return metaData;
 }
@@ -69,19 +67,19 @@ Promise
 				themeColor: metaTags["theme-color"] || "",
 			}))
 	))
-	.finally(() => {
-		servers.sort((a, b) => serverUrls.indexOf(a.url) - serverUrls.indexOf(b.url));
+	.finally((): void => {
+		servers.sort((a: IServer, b: IServer) => serverUrls.indexOf(a.url) - serverUrls.indexOf(b.url));
 		start();
 	});
 
 const filePath: string = path.resolve("src/public/index.html");
 
-function start() {
+function start(): void {
 	serve({
 		async fetch(req: Request): Promise<Response> {
-			const url = new URL(req.url);
+			const _url: URL = new URL(req.url);
 
-			if (url.pathname === "/" && req.method === "GET") {
+			if (_url.pathname === "/" && req.method === "GET") {
 				return new Response(Bun.file(filePath), {
 					headers: {
 						"Content-Type": "text/html"
@@ -89,9 +87,9 @@ function start() {
 				});
 			}
 
-			if (url.pathname === "/api/servers" && req.method === "GET") {
-				const sortedServers = serverUrls.map(url =>
-					servers.find(server => server.url === url)
+			if (_url.pathname === "/api/servers" && req.method === "GET") {
+				const sortedServers: (IServer | undefined)[] = serverUrls.map((url: string) =>
+					servers.find((server: IServer): boolean => server.url === url)
 				).filter(Boolean);
 
 				return new Response(JSON.stringify({
