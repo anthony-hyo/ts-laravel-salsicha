@@ -68,7 +68,7 @@
 			filter: brightness(0.8);
 		}
 
-		.content {
+		.content-game {
 			padding: 40px;
 			display: flex;
 			flex-direction: column;
@@ -82,24 +82,24 @@
 			height: 100%;
 		}
 
-		.content img {
+		.content-game img {
 			width: 500px;
 			margin-bottom: 20px;
 		}
 
-		.content h1 {
+		.content-game h1 {
 			font-size: 2.5rem;
 			margin-bottom: 10px;
 		}
 
-		.content p {
+		.content-game p {
 			font-size: 1rem;
 			margin-bottom: 30px;
 			color: #bbb;
 			width: 50%;
 		}
 
-		.content button {
+		.content-game button {
 			background: linear-gradient(45deg, #ff5722, #ff9100);
 			color: #fff;
 			border: none;
@@ -110,7 +110,7 @@
 			transition: background 0.3s;
 		}
 
-		.content button:hover {
+		.content-game button:hover {
 			background: linear-gradient(45deg, #ff9100, #ff5722);
 		}
 
@@ -128,14 +128,33 @@
 			z-index: -1;
 			backdrop-filter: blur(10px);
 		}
+
+		.card {
+			background-color: #333;
+			padding: 20px;
+			margin: 10px;
+			border-radius: 10px;
+			color: #fff;
+			width: 200px;
+			text-align: center;
+		}
+		.card img {
+			width: 100px;
+			height: 100px;
+			border-radius: 10px;
+		}
+
+		.hidden {
+			display: none;
+		}
 	</style>
 </head>
 <body>
 <div class="launcher">
 	<div class="sidebar">
-		<!-- Sidebar images will be dynamically inserted here -->
+		<button id="showGamesBtn">Show All Games</button>
 	</div>
-	<div class="content">
+	<div class="content-game">
 		<div class="background"></div>
 
 		<img src="https://example.com/game1-logo.png" alt="Game Logo">
@@ -143,15 +162,20 @@
 		<p>Experience the adventure of a lifetime in this thrilling game.</p>
 		<button>Play Now</button>
 	</div>
+	<div class="content-game-list hidden">
+		<div class="background"></div>
+	</div>
 </div>
 
 <script>
 	const sidebar = document.querySelector('.sidebar');
-	const gameLogo = document.querySelector('.content img');
-	const gameTitle = document.querySelector('.content h1');
-	const gameDescription = document.querySelector('.content p');
-	const playButton = document.querySelector('.content button');
-	const content = document.querySelector('.content');
+	const gameLogo = document.querySelector('.content-game img');
+	const gameTitle = document.querySelector('.content-game h1');
+	const gameDescription = document.querySelector('.content-game p');
+	const playButton = document.querySelector('.content-game button');
+	const contentGame = document.querySelector('.content-game');
+	const contentGameList = document.querySelector('.content-game-list');
+	const showGamesBtn = document.getElementById('showGamesBtn');
 
 	async function fetchServers() {
 		const response = await fetch('/api/servers');
@@ -182,8 +206,8 @@
 				gameTitle.textContent = game.name;
 				gameDescription.textContent = game.description;
 
-				content.style.backgroundImage = `url(${game.background})`;
-				content.style.backgroundColor = game.themeColor;
+				contentGame.style.backgroundImage = `url(${game.background})`;
+				contentGame.style.backgroundColor = game.themeColor;
 
 				playButton.style.background = game.themeColor;
 			}
@@ -201,13 +225,40 @@
 				gameTitle.textContent = game.name;
 				gameDescription.textContent = game.description;
 
-				content.style.backgroundImage = `url(${game.background})`;
-				content.style.backgroundColor = game.themeColor;
+				contentGame.style.backgroundImage = `url(${game.background})`;
+				contentGame.style.backgroundColor = game.themeColor;
 
 				playButton.style.background = game.themeColor;
 			});
 		});
+
+		showGamesBtn.addEventListener('click', () => {
+			contentGame.classList.toggle('hidden');
+			contentGameList.classList.toggle('hidden');
+
+			const gameCards = document.createElement('div');
+			gameCards.style.display = 'flex';
+			gameCards.style.flexWrap = 'wrap';
+			gameCards.style.justifyContent = 'center';
+
+			games.forEach(game => {
+				const card = document.createElement('div');
+				card.classList.add('card');
+				card.innerHTML = `
+					<img src="${game.logoMini}" alt="${game.name}">
+					<h3>${game.name}</h3>
+					<p>${game.description}</p>
+				`;
+				gameCards.appendChild(card);
+			});
+
+			contentGameList.appendChild(gameCards);
+		});
 	}
+
+	contentGameList.addEventListener('click', () => {
+		contentGame.classList.toggle('hidden');
+	});
 
 	fetchServers();
 </script>
