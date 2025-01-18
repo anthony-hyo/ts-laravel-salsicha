@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Game Launcher</title>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<style>
 		body {
 			font-family: 'Poppins', sans-serif;
@@ -18,7 +18,7 @@
 			overflow: hidden;
 		}
 
-		.launcher {
+		.launcher-container {
 			display: flex;
 			width: 100%;
 			height: 100%;
@@ -26,7 +26,7 @@
 			overflow: hidden;
 		}
 
-		.sidebar {
+		.sidebar-menu {
 			width: 79px;
 			display: flex;
 			flex-direction: column;
@@ -40,19 +40,19 @@
 			scroll-behavior: smooth;
 		}
 
-		.sidebar::-webkit-scrollbar {
+		.sidebar-menu::-webkit-scrollbar {
 			width: 8px;
 		}
 
-		.sidebar::-webkit-scrollbar-thumb {
+		.sidebar-menu::-webkit-scrollbar-thumb {
 			background-color: #ff5722;
 		}
 
-		.sidebar::-webkit-scrollbar-track {
+		.sidebar-menu::-webkit-scrollbar-track {
 			background: rgba(0, 0, 0, 0.2);
 		}
 
-		.sidebar img {
+		.sidebar-menu img {
 			width: 50px;
 			height: 50px;
 			border-radius: 10px;
@@ -61,45 +61,50 @@
 			margin: 8px 15px;
 		}
 
-		.sidebar img.active {
+		.sidebar-menu img.active {
 			transform: scale(1.1);
 			border-width: 3px;
 			border-style: solid;
 			filter: brightness(0.8);
 		}
 
-		.content-game {
+		.game-content {
 			padding: 40px;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
 			text-align: center;
-			background-size: cover;
 			transition: background-color 0.3s, background-image 0.3s;
 			z-index: 0;
 			width: 100%;
 			height: 100%;
+
+			background-attachment: fixed;
+			background-color: #000;
+			background-position-x: center;
+			background-repeat: no-repeat;
+			background-size: cover;
 		}
 
-		.content-game img {
+		.game-content img {
 			width: 500px;
 			margin-bottom: 20px;
 		}
 
-		.content-game h1 {
+		.game-content h1 {
 			font-size: 2.5rem;
 			margin-bottom: 10px;
 		}
 
-		.content-game p {
+		.game-content p {
 			font-size: 1rem;
 			margin-bottom: 30px;
 			color: #bbb;
 			width: 50%;
 		}
 
-		.content-game button {
+		.game-content button {
 			background: linear-gradient(45deg, #ff5722, #ff9100);
 			color: #fff;
 			border: none;
@@ -110,15 +115,15 @@
 			transition: background 0.3s;
 		}
 
-		.content-game button:hover {
+		.game-content button:hover {
 			background: linear-gradient(45deg, #ff9100, #ff5722);
 		}
 
-		.sidebar img:hover {
+		.sidebar-menu img:hover {
 			filter: brightness(0.8);
 		}
 
-		.background {
+		.background-overlay {
 			content: '';
 			width: 100vw;
 			height: 100vh;
@@ -129,7 +134,7 @@
 			backdrop-filter: blur(10px);
 		}
 
-		.card {
+		.game-card {
 			background-color: #333;
 			padding: 20px;
 			margin: 10px;
@@ -138,50 +143,91 @@
 			width: 200px;
 			text-align: center;
 		}
-		.card img {
+		.game-card img {
 			width: 100px;
 			height: 100px;
 			border-radius: 10px;
 		}
 
-		.hidden {
+		.hidden-element {
 			display: none;
 		}
+
+		#toggleGamesButton {
+			background-color: #252525;
+			color: #fff;
+			border: none;
+			padding: 12px;
+			font-size: 1.5rem;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: background 0.3s, transform 0.3s;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#toggleGamesButton:hover {
+			background-color: #ff5722;
+			transform: scale(1.1);
+		}
+
+		#toggleGamesButton .material-icons {
+			font-size: 1.8rem;
+		}
+
 	</style>
 </head>
 <body>
-<div class="launcher">
-	<div class="sidebar">
-		<button id="showGamesBtn">Show All Games</button>
+<div class="launcher-container">
+	<div class="sidebar-menu">
+		<button id="toggleGamesButton">
+			<span class="material-icons">menu</span>
+		</button>
 	</div>
-	<div class="content-game">
-		<div class="background"></div>
+	<div class="game-content">
+		<div class="background-overlay"></div>
 
 		<img src="https://example.com/game1-logo.png" alt="Game Logo">
 		<h1>Game Title</h1>
 		<p>Experience the adventure of a lifetime in this thrilling game.</p>
 		<button>Play Now</button>
 	</div>
-	<div class="content-game-list hidden">
-		<div class="background"></div>
+	<div class="game-content-list hidden-element">
+		<div class="background-overlay"></div>
 	</div>
 </div>
-
 <script>
-	const sidebar = document.querySelector('.sidebar');
-	const gameLogo = document.querySelector('.content-game img');
-	const gameTitle = document.querySelector('.content-game h1');
-	const gameDescription = document.querySelector('.content-game p');
-	const playButton = document.querySelector('.content-game button');
-	const contentGame = document.querySelector('.content-game');
-	const contentGameList = document.querySelector('.content-game-list');
-	const showGamesBtn = document.getElementById('showGamesBtn');
+	function makeTransparent(color, percentage) {
+		const rgba = color.match(/^#([0-9A-Fa-f]{6})$/);
+		if (rgba) {
+			const hex = rgba[1];
+			const r = parseInt(hex.substring(0, 2), 16);
+			const g = parseInt(hex.substring(2, 4), 16);
+			const b = parseInt(hex.substring(4, 6), 16);
+			return `rgba(${r}, ${g}, ${b}, ${percentage})`;
+		}
+		return color;
+	}
+
+	const sidebarMenu = document.querySelector('.sidebar-menu');
+	const gameLogo = document.querySelector('.game-content img');
+	const gameBackgroundOverlay = document.querySelector('.game-content .background-overlay');
+	const gameTitle = document.querySelector('.game-content h1');
+	const gameDescription = document.querySelector('.game-content p');
+	const playButton = document.querySelector('.game-content button');
+	const gameContent = document.querySelector('.game-content');
+	const gameContentList = document.querySelector('.game-content-list');
+	const toggleGamesButton = document.getElementById('toggleGamesButton');
+
+	let games = [];
 
 	async function fetchServers() {
 		const response = await fetch('/api/servers');
+
 		const data = await response.json();
 
-		const games = data.data.map(server => ({
+		games = data.data.map(server => ({
 			url: server.url,
 			name: server.name,
 			description: server.description,
@@ -192,75 +238,86 @@
 			themeColor: server.themeColor,
 		}));
 
+		renderSidebar();
+		setGameState(games[0])
+	}
+
+	function renderSidebar() {
+		const fragment = document.createDocumentFragment();
+
 		games.forEach((game, index) => {
 			const img = document.createElement('img');
 			img.src = game.icon;
 			img.alt = game.name;
+			img.dataset.index = index;
 
 			if (index === 0) {
 				img.classList.add('active');
 				img.style.backgroundColor = game.themeColor;
 				img.style.borderColor = game.themeColor;
-
-				gameLogo.src = game.logo;
-				gameTitle.textContent = game.name;
-				gameDescription.textContent = game.description;
-
-				contentGame.style.backgroundImage = `url(${game.background})`;
-				contentGame.style.backgroundColor = game.themeColor;
-
-				playButton.style.background = game.themeColor;
 			}
 
-			sidebar.appendChild(img);
-
-			img.addEventListener('click', () => {
-				document.querySelector('.sidebar img.active').classList.remove('active');
-
-				img.classList.add('active');
-				img.style.backgroundColor = game.themeColor;
-				img.style.borderColor = game.themeColor;
-
-				gameLogo.src = game.logo;
-				gameTitle.textContent = game.name;
-				gameDescription.textContent = game.description;
-
-				contentGame.style.backgroundImage = `url(${game.background})`;
-				contentGame.style.backgroundColor = game.themeColor;
-
-				playButton.style.background = game.themeColor;
-			});
+			img.addEventListener('click', handleGameSelection);
+			fragment.appendChild(img);
 		});
 
-		showGamesBtn.addEventListener('click', () => {
-			contentGame.classList.toggle('hidden');
-			contentGameList.classList.toggle('hidden');
-
-			const gameCards = document.createElement('div');
-			gameCards.style.display = 'flex';
-			gameCards.style.flexWrap = 'wrap';
-			gameCards.style.justifyContent = 'center';
-
-			games.forEach(game => {
-				const card = document.createElement('div');
-				card.classList.add('card');
-				card.innerHTML = `
-					<img src="${game.logoMini}" alt="${game.name}">
-					<h3>${game.name}</h3>
-					<p>${game.description}</p>
-				`;
-				gameCards.appendChild(card);
-			});
-
-			contentGameList.appendChild(gameCards);
-		});
+		sidebarMenu.appendChild(fragment);
 	}
 
-	contentGameList.addEventListener('click', () => {
-		contentGame.classList.toggle('hidden');
+	function handleGameSelection(event) {
+		const index = event.target.dataset.index;
+		const game = games[index];
+
+		document.querySelector('.sidebar-menu img.active').classList.remove('active');
+
+		event.target.classList.add('active');
+		event.target.style.backgroundColor = game.themeColor;
+		event.target.style.borderColor = game.themeColor;
+
+		setGameState(game)
+	}
+
+	function setGameState(game) {
+		gameLogo.src = game.logo;
+		gameTitle.textContent = game.name;
+		gameDescription.textContent = game.description;
+		gameContent.style.backgroundImage = `url(${game.background})`;
+		gameContent.style.backgroundColor = game.themeColor;
+		gameBackgroundOverlay.style.backgroundColor = makeTransparent(game.themeColor, 0.07);
+		playButton.style.background = game.themeColor;
+	}
+
+	toggleGamesButton.addEventListener('click', () => {
+		gameContent.classList.toggle('hidden-element');
+		gameContentList.classList.toggle('hidden-element');
+
+		if (!gameContentList.querySelector('.game-card')) {
+			renderGameCards();
+		}
 	});
+
+	function renderGameCards() {
+		const gameCards = document.createElement('div');
+		gameCards.style.display = 'flex';
+		gameCards.style.flexWrap = 'wrap';
+		gameCards.style.justifyContent = 'center';
+
+		games.forEach(game => {
+			const card = document.createElement('div');
+			card.classList.add('game-card');
+			card.innerHTML = `
+		        <img src="${game.logoMini}" alt="${game.name}">
+		        <h3>${game.name}</h3>
+		        <p>${game.description}</p>
+		    `;
+			gameCards.appendChild(card);
+		});
+
+		gameContentList.appendChild(gameCards);
+	}
 
 	fetchServers();
 </script>
+
 </body>
 </html>
