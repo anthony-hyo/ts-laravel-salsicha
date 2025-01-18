@@ -19,8 +19,7 @@
 		}
 
 		.launcher {
-			display: grid;
-			grid-template-columns: 0fr 3.7fr;
+			display: flex;
 			width: 100%;
 			height: 100%;
 			background: #1e1e1e;
@@ -32,13 +31,10 @@
 			flex-direction: column;
 			align-items: center;
 			background: #252525;
-			padding: 20px 10px;
-			gap: 15px;
 			z-index: 2;
 			overflow-y: auto;
+			overflow-x: hidden;
 			max-height: 100vh;
-			width: 100px; /* Optional: Adjust sidebar width */
-			border-radius: 10px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 			scroll-behavior: smooth;
 		}
@@ -49,7 +45,6 @@
 
 		.sidebar::-webkit-scrollbar-thumb {
 			background-color: #ff5722;
-			border-radius: 10px;
 		}
 
 		.sidebar::-webkit-scrollbar-track {
@@ -62,11 +57,14 @@
 			border-radius: 10px;
 			cursor: pointer;
 			transition: transform 0.3s, border 0.3s;
+			margin: 8px 15px;
 		}
 
 		.sidebar img.active {
 			transform: scale(1.1);
-			border: 3px solid #ff5722;
+			border-width: 3px;
+			border-style: solid;
+			filter: brightness(0.8);
 		}
 
 		.content {
@@ -79,6 +77,8 @@
 			background-size: cover;
 			transition: background-color 0.3s, background-image 0.3s;
 			z-index: 0;
+			width: 100%;
+			height: 100%;
 		}
 
 		.content img {
@@ -174,8 +174,16 @@
 
 			if (index === 0) {
 				img.classList.add('active');
+				img.style.backgroundColor = game.themeColor;
+				img.style.borderColor = game.themeColor;
+
+				gameLogo.src = game.logo;
+				gameTitle.textContent = game.name;
+				gameDescription.textContent = game.description;
+
 				content.style.backgroundImage = `url(${game.background})`;
 				content.style.backgroundColor = game.themeColor;
+
 				playButton.style.background = game.themeColor;
 			}
 
@@ -183,13 +191,18 @@
 
 			img.addEventListener('click', () => {
 				document.querySelector('.sidebar img.active').classList.remove('active');
+
 				img.classList.add('active');
+				img.style.backgroundColor = game.themeColor;
+				img.style.borderColor = game.themeColor;
 
 				gameLogo.src = game.logo;
 				gameTitle.textContent = game.name;
 				gameDescription.textContent = game.description;
+
 				content.style.backgroundImage = `url(${game.background})`;
 				content.style.backgroundColor = game.themeColor;
+
 				playButton.style.background = game.themeColor;
 			});
 		});
