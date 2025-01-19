@@ -3,9 +3,14 @@
  */
 
 import IRequestData from "../interfaces/IRequestData";
+import Main from "../Main";
+import IRequest from "../interfaces/IRequest";
 
 export default function RequestData(data: IRequestData): ClassDecorator {
 	return (target: Function): void => {
-		(target as any).requestData = data;
+		Main.SINGLETON.requestRoute.addRoute({
+			data: data,
+			request: target as { new (...args: any[]): IRequest },
+		})
 	};
 }

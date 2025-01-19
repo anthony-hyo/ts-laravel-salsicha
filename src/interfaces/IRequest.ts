@@ -4,6 +4,6 @@
 
 export default interface IRequest {
 
-	handler(): Promise<void>;
+	handler(): Response | Promise<Response>;
 
 }
