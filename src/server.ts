@@ -7,6 +7,8 @@ import * as console from "node:console";
 import {Router} from "./app/decorators/Route";
 import RequestMethod from "./app/enums/RequestMethod";
 import loadRoutes from "./routes/web";
+import IRoute from "./interfaces/IRoute";
+import Renderer from "./app/helpers/Renderer";
 
 export default class ServerApp {
 
@@ -21,15 +23,15 @@ export default class ServerApp {
 			async fetch(req: Request): Promise<Response> {
 				try {
 					const _url = new URL(req.url);
-					const matchedRoute = Router.match(_url.pathname, <RequestMethod>req.method);
+					const matchedRoute: IRoute | undefined = Router.match(_url.pathname, <RequestMethod>req.method);
 
 					if (matchedRoute) {
-						const controllerInstance = new matchedRoute.controller();
+						const controllerInstance: any = new matchedRoute.controller();
 
 						return await new Promise<Response>(async (resolve, reject) => {
 							try {
 								await Router.executeMiddlewares(matchedRoute.middlewares, req, new Response(), async () => {
-									const result = await controllerInstance[matchedRoute.handler](req);
+									const result: any = await controllerInstance[matchedRoute.handler](req);
 									resolve(result);
 								});
 							} catch (error) {
@@ -38,21 +40,10 @@ export default class ServerApp {
 						});
 					}
 
-					return new Response("Route not found", {status: 404});
+					return Renderer.notFound()
 				} catch (error) {
 					console.error("Error occurred:", error);
-					return new Response(
-						JSON.stringify({
-							message: "Internal Server Error",
-							details: error,
-						}),
-						{
-							status: 500,
-							headers: {
-								"Content-Type": "application/json"
-							}
-						}
-					);
+					return Renderer.serverError()
 				}
 			},
 			port: 3000,
