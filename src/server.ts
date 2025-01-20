@@ -28,22 +28,22 @@ export default class ServerApp {
 					if (matchedRoute) {
 						const controllerInstance: any = new matchedRoute.controller();
 
-						return await new Promise<Response>(async (resolve, reject) => {
+						return await new Promise<Response>(async (resolve: (value: (PromiseLike<Response> | Response)) => void, reject: (reason?: any) => void): Promise<void> => {
 							try {
-								await Router.executeMiddlewares(matchedRoute.middlewares, req, new Response(), async () => {
+								await Router.executeMiddlewares(matchedRoute.middlewares, req, new Response(), async (): Promise<void> => {
 									const result: any = await controllerInstance[matchedRoute.handler](req);
 									resolve(result);
 								});
 							} catch (error) {
-								reject(new Response("Internal Server Error", {status: 500}));
+								reject(Renderer.serverError());
 							}
 						});
 					}
 
-					return Renderer.notFound()
+					return Renderer.notFound();
 				} catch (error) {
 					console.error("Error occurred:", error);
-					return Renderer.serverError()
+					return Renderer.serverError();
 				}
 			},
 			port: 3000,
