@@ -4,11 +4,12 @@
 
 import {serve, Server} from "bun";
 import * as console from "node:console";
-import {loadRoutes} from "./routes/web";
-import {Router} from "./decorators/Route";
-import RequestMethod from "./enums/RequestMethod";
+import {Router} from "./app/decorators/Route";
+import RequestMethod from "./app/enums/RequestMethod";
+import loadRoutes from "./routes/web";
 
 class ServerApp {
+
 	constructor() {
 		this.startServer();
 	}
@@ -18,14 +19,14 @@ class ServerApp {
 			async fetch(req: Request): Promise<Response> {
 				try {
 					const _url = new URL(req.url);
-					const matchedRoute = Router.match(_url.pathname, <RequestMethod> req.method);
+					const matchedRoute = Router.match(_url.pathname, <RequestMethod>req.method);
 
 					if (matchedRoute) {
 						const controllerInstance = new matchedRoute.controller();
 						return await controllerInstance[matchedRoute.handler](req);
 					}
 
-					return new Response("Route not found", { status: 404 });
+					return new Response("Route not found", {status: 404});
 				} catch (error) {
 					console.error("Error occurred:", error);
 					return new Response(
@@ -33,7 +34,12 @@ class ServerApp {
 							message: "Internal Server Error",
 							details: error,
 						}),
-						{ status: 500, headers: { "Content-Type": "application/json" } }
+						{
+							status: 500,
+							headers: {
+								"Content-Type": "application/json"
+							}
+						}
 					);
 				}
 			},
@@ -45,7 +51,6 @@ class ServerApp {
 	}
 }
 
-// Carrega as rotas
 loadRoutes();
 
 new ServerApp();

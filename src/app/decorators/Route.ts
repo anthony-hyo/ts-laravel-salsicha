@@ -12,6 +12,7 @@ export function Route(path: string, method: RequestMethod = RequestMethod.GET) {
 }
 
 export class Router {
+	
 	private static routes: { path: string; method: RequestMethod; controller: any; handler: string }[] = [];
 
 	public static register(path: string, method: RequestMethod, controller: any, handler: string) {
@@ -21,4 +22,5 @@ export class Router {
 	public static match(path: string, method: RequestMethod) {
 		return this.routes.find(route => route.path === path && route.method === method);
 	}
+
 }

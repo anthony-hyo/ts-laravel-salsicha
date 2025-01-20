@@ -2,11 +2,20 @@
  * Copyright (c) 2025 Anthony S. All rights reserved.
  */
 
-import {Route} from "../../decorators/Route";
-import IServer from "../../interfaces/IServer";
-import Helper from "../../helpers/Helper";
-import RequestMethod from "../../enums/RequestMethod";
-import {render} from "../views";
+import RequestMethod from "../enums/RequestMethod";
+import Helper from "../helpers/Helper";
+import {Route} from "../decorators/Route";
+
+interface IServer {
+	url: string;
+	name: string;
+	description: string;
+	logo: string;
+	logoMini: string;
+	icon: string;
+	background: string;
+	themeColor: string;
+}
 
 export default class ServerController {
 
@@ -15,10 +24,10 @@ export default class ServerController {
 		const pageTitle = "Home Page";
 		const pageDescription = "Welcome to the homepage of this Bun-based framework.";
 
-		const htmlContent = await render("index.ejs", { pageTitle, pageDescription });
+		//const htmlContent = await render("index.ejs", {pageTitle, pageDescription});
 
-		return new Response(htmlContent, {
-			headers: { "Content-Type": "text/html" },
+		return new Response("htmlContent", {
+			headers: {"Content-Type": "text/html"},
 		});
 	}
 
@@ -31,11 +40,6 @@ export default class ServerController {
 		return new Response(JSON.stringify({data: sortedServers}), {
 			headers: {"Content-Type": "application/json"},
 		});
-	}
-
-
-	private validateUrl(inputUrl: string, baseUrl: string = "https://redhero.online"): string {
-		return /^https?:\/\//.test(inputUrl) ? inputUrl : new URL(inputUrl, baseUrl).toString();
 	}
 
 	private servers: IServer[] = [
