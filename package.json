@@ -6,10 +6,12 @@
     "dev": "bun run --watch src/server.ts"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
     "bun-types": "latest"
   },
   "module": "src/index.js",
   "dependencies": {
+    "ejs": "^3.1.10",
     "reflect-metadata": "^0.2.2"
   }
 }

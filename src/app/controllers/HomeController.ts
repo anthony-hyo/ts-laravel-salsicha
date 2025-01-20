@@ -5,7 +5,7 @@
 import {Route} from "../../decorators/Route";
 
 export default class HomeController {
-	@Route("/", "GET")
+	@Route("/2", "GET")
 	async index(req: Request): Promise<Response> {
 		return new Response(
 			JSON.stringify({message: "Welcome to the Laravel-like Bun framework!"}),
@@ -13,7 +13,7 @@ export default class HomeController {
 		);
 	}
 
-	@Route("/about", "GET")
+	@Route("/3", "GET")
 	async about(req: Request): Promise<Response> {
 		return new Response(
 			JSON.stringify({message: "This is the About page!"}),

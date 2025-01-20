@@ -3,7 +3,9 @@
  */
 
 import HomeController from "../app/controllers/HomeController";
+import ServerController from "../app/controllers/ServerController";
 
 export function loadRoutes() {
-	new HomeController(); // As rotas são automaticamente registradas ao instanciar o controlador
+	new HomeController();
+	new ServerController();
 }

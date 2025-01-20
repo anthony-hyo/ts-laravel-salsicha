@@ -2,35 +2,41 @@
  * Copyright (c) 2025 Anthony S. All rights reserved.
  */
 
-import RequestData from "../../../decorators/RequestData";
-import RequestMethod from "../../../enums/RequestMethod";
-import IRequest from "../../../interfaces/IRequest";
-import IServer from "../../../interfaces/IServer";
-import Helper from "../../../helpers/Helper";
+import {Route} from "../../decorators/Route";
+import IServer from "../../interfaces/IServer";
+import Helper from "../../helpers/Helper";
+import RequestMethod from "../../enums/RequestMethod";
+import {render} from "../views";
 
-@RequestData({
-	pathname: '/api/servers',
-	method: RequestMethod.GET
-})
-export default class ServerRequest implements IRequest {
+export default class ServerController {
 
-	public handler(): Response {
-		this.servers.map((url): Promise<IServer> => this.getServerData(url))
+	@Route("/", RequestMethod.GET)
+	async index(req: Request): Promise<Response> {
+		const pageTitle = "Home Page";
+		const pageDescription = "Welcome to the homepage of this Bun-based framework.";
 
-		const sortedServers: (IServer | undefined)[] =
-			this.servers
-				.map((server1: IServer): IServer | undefined => this.servers.find((server: IServer): boolean => server.url === server1.url))
-				.filter(Boolean);
+		const htmlContent = await render("index.ejs", { pageTitle, pageDescription });
 
-		return new Response(JSON.stringify({
-			data: sortedServers
-		}), {
-			headers: {
-				"Content-Type": "application/json"
-			}
+		return new Response(htmlContent, {
+			headers: { "Content-Type": "text/html" },
 		});
 	}
 
+	@Route("/api/servers", RequestMethod.GET)
+	async getServers(req: Request): Promise<Response> {
+		const sortedServers: IServer[] = await Promise.all(
+			this.servers.map(async (server) => await this.getServerData(server))
+		);
+
+		return new Response(JSON.stringify({data: sortedServers}), {
+			headers: {"Content-Type": "application/json"},
+		});
+	}
+
+
+	private validateUrl(inputUrl: string, baseUrl: string = "https://redhero.online"): string {
+		return /^https?:\/\//.test(inputUrl) ? inputUrl : new URL(inputUrl, baseUrl).toString();
+	}
 
 	private servers: IServer[] = [
 		{

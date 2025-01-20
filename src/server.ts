@@ -6,6 +6,7 @@ import {serve, Server} from "bun";
 import * as console from "node:console";
 import {loadRoutes} from "./routes/web";
 import {Router} from "./decorators/Route";
+import RequestMethod from "./enums/RequestMethod";
 
 class ServerApp {
 	constructor() {
@@ -15,18 +16,30 @@ class ServerApp {
 	public startServer(): void {
 		const server: Server = serve({
 			async fetch(req: Request): Promise<Response> {
-				const url = new URL(req.url);
-				const matchedRoute = Router.match(url.pathname, req.method);
+				try {
+					const _url = new URL(req.url);
+					const matchedRoute = Router.match(_url.pathname, <RequestMethod> req.method);
 
-				if (matchedRoute) {
-					const controllerInstance = new matchedRoute.controller();
-					return controllerInstance[matchedRoute.handler](req);
+					if (matchedRoute) {
+						const controllerInstance = new matchedRoute.controller();
+						return await controllerInstance[matchedRoute.handler](req);
+					}
+
+					return new Response("Route not found", { status: 404 });
+				} catch (error) {
+					console.error("Error occurred:", error);
+					return new Response(
+						JSON.stringify({
+							message: "Internal Server Error",
+							details: error,
+						}),
+						{ status: 500, headers: { "Content-Type": "application/json" } }
+					);
 				}
-
-				return new Response("Route not found", { status: 404 });
 			},
 			port: 3000,
 		});
+
 
 		console.log(`Server running on ${server.url}`);
 	}
