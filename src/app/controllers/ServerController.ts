@@ -5,6 +5,8 @@
 import RequestMethod from "../enums/RequestMethod";
 import Helper from "../helpers/Helper";
 import {Route} from "../decorators/Route";
+import {logger} from "../middlewares/logger";
+import Renderer from "../helpers/Renderer";
 
 interface IServer {
 	url: string;
@@ -19,30 +21,7 @@ interface IServer {
 
 export default class ServerController {
 
-	@Route("/", RequestMethod.GET)
-	async index(req: Request): Promise<Response> {
-		const pageTitle = "Home Page";
-		const pageDescription = "Welcome to the homepage of this Bun-based framework.";
-
-		//const htmlContent = await render("index.ejs", {pageTitle, pageDescription});
-
-		return new Response("htmlContent", {
-			headers: {"Content-Type": "text/html"},
-		});
-	}
-
-	@Route("/api/servers", RequestMethod.GET)
-	async getServers(req: Request): Promise<Response> {
-		const sortedServers: IServer[] = await Promise.all(
-			this.servers.map(async (server) => await this.getServerData(server))
-		);
-
-		return new Response(JSON.stringify({data: sortedServers}), {
-			headers: {"Content-Type": "application/json"},
-		});
-	}
-
-	private servers: IServer[] = [
+	private static readonly servers: IServer[] = [
 		{
 			url: "https://redhero.online/home?salsicha",
 			name: "",
@@ -135,7 +114,21 @@ export default class ServerController {
 		}
 	];
 
-	private async getServerData(server: IServer): Promise<IServer> {
+	@Route("/", RequestMethod.GET, [logger])
+	async index(request: Request): Promise<Response> {
+		return await Renderer.view('launcher/home');
+	}
+
+	@Route("/api/servers", RequestMethod.GET, [logger])
+	async getServers(request: Request): Promise<Response> {
+		return Renderer.json({
+			data: await Promise.all(
+				ServerController.servers.map(async (server) => await ServerController.getServerData(server))
+			)
+		});
+	}
+
+	private static async getServerData(server: IServer): Promise<IServer> {
 		const response: Response = await fetch(server.url);
 		const html: string = await response.text();
 
@@ -148,7 +141,11 @@ export default class ServerController {
 		const logoMini: string = logoMiniMatch ? logoMiniMatch[1] : "";
 		const logo: string = logoMatch ? logoMatch[1] : "";
 
-		const metaData: Record<string, string> = {background, logo, "logo-mini": logoMini};
+		const metaData: Record<string, string> = {
+			background,
+			logo,
+			"logo-mini": logoMini
+		};
 
 		metaTags.forEach(tag => {
 			const nameMatch = tag.match(/(name|property)=["']([^"']+)["']/);

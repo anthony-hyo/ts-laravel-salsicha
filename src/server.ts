@@ -8,7 +8,9 @@ import {Router} from "./app/decorators/Route";
 import RequestMethod from "./app/enums/RequestMethod";
 import loadRoutes from "./routes/web";
 
-class ServerApp {
+export default class ServerApp {
+
+	public static readonly appRoot = __dirname;
 
 	constructor() {
 		this.startServer();
@@ -23,7 +25,17 @@ class ServerApp {
 
 					if (matchedRoute) {
 						const controllerInstance = new matchedRoute.controller();
-						return await controllerInstance[matchedRoute.handler](req);
+
+						return await new Promise<Response>(async (resolve, reject) => {
+							try {
+								await Router.executeMiddlewares(matchedRoute.middlewares, req, new Response(), async () => {
+									const result = await controllerInstance[matchedRoute.handler](req);
+									resolve(result);
+								});
+							} catch (error) {
+								reject(new Response("Internal Server Error", {status: 500}));
+							}
+						});
 					}
 
 					return new Response("Route not found", {status: 404});
