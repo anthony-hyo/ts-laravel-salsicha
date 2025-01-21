@@ -133,7 +133,7 @@ export default class ServerController {
 	async getServers(request: Request): Promise<Response> {
 		return Renderer.json({
 			data: await Promise.all(
-				ServerController.servers.map(async (server) => await ServerController.getServerData(server))
+				ServerController.servers.map(async (server: IServer): Promise<IServer> => await ServerController.getServerData(server))
 			)
 		});
 	}

@@ -25,8 +25,13 @@ export default class Renderer {
 	 * const response = await Renderer.view('index', { title: 'Home' });
 	 */
 	public static async view(view: string, data: any = {}, statusCode: number = 200): Promise<Response> {
-		const viewPath = path.resolve(ServerApp.appRoot, "views", `${view}.ejs`);
-		return this.html(await ejs.renderFile(viewPath, data), statusCode);
+		return this.html(await ejs.renderFile(`${view}.ejs`, data, {
+			root: ServerApp.viewsPath,
+			cache: true,
+			compileDebug: false,
+			strict: true,
+			rmWhitespace: true
+		}), statusCode);
 	}
 
 	/**
