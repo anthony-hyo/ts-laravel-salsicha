@@ -4,6 +4,8 @@
 
 import ServerController from "../app/controllers/ServerController";
 
+//TODO: Automatic
+
 export default function loadRoutes() {
 	new ServerController();
 }
