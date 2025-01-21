@@ -103,12 +103,22 @@ export default class ServerController {
 			themeColor: "",
 		},
 		{
+			url: "https://fruitaq.com/home?salsicha",
+			name: "",
+			description: "",
+			logo: "",
+			logoMini: "",
+			icon: "",
+			background: "",
+			themeColor: "",
+		},
+		{
 			url: "https://game.aq.com/game/",
 			name: "",
 			description: "",
 			logo: "https://www.aq.com/img/network/logo-md-aqw.png",
 			logoMini: "https://www.aq.com/img/network/logo-md-aqw.png",
-			icon: "https://www.artix.com/images/Games/AQWorlds-Promo-760.jpg",
+			icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9AlLbLwi73G-Ce2KgRryBdvgTeMxCuoXyZg&s",
 			background: "https://www.aq.com/img/bg/bg-lg-masterheader.jpg",
 			themeColor: "",
 		}
