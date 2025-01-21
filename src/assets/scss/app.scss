@@ -2,4 +2,20 @@
  * Copyright (c) 2025 Anthony S. All rights reserved.
  */
 
+.hidden {
+	display: none;
+}
+
 @import 'launcher';
+
+::-webkit-scrollbar {
+	width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #ff5722;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.2);
+}

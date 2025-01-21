@@ -113,19 +113,28 @@ export default class Renderer {
 	/**
 	 * Returns a file response.
 	 *
-	 * @param {string} filePath - The file path to return.
-	 * @param {number} [statusCode=200] - The HTTP status code.
-	 * @returns {Response} The file response.
+	 * @param {Buffer | string | ReadableStream} fileContent - The content of the file, which can be a Buffer, string, or ReadableStream.
+	 * @param {string} contentType - The MIME type of the file (e.g., 'application/pdf', 'text/html', etc.).
+	 * @param {number} [statusCode=200] - The HTTP status code to return. Defaults to 200 if not specified.
+	 * @returns {Response} The file response with the specified content and headers.
 	 *
 	 * @example
-	 * // Returns a file response for a download
-	 * const response = Renderer.file('/path/to/file.pdf');
+	 * // Returns a file response for a binary file
+	 * const response = Renderer.file(fileBuffer, 'application/pdf');
+	 *
+	 * @example
+	 * // Returns a file response for a text file
+	 * const response = Renderer.file('<h1>Hello, world!</h1>', 'text/html');
+	 *
+	 * @example
+	 * // Returns a file response for streaming content
+	 * const response = Renderer.file(stream, 'audio/mp3');
 	 */
-	public static file(filePath: string, statusCode: number = 200): Response {
-		return new Response(filePath, {
+	public static file(fileContent: Buffer | string | ReadableStream, contentType: string, statusCode: number = 200): Response {
+		return new Response(fileContent, {
 			status: statusCode,
 			headers: {
-				"Content-Type": "application/octet-stream"
+				"Content-Type": contentType,
 			},
 		});
 	}

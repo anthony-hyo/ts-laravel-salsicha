@@ -255,3 +255,7 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,node
+/src/public/assets/css/app.css
+/src/public/assets/css/app.css.map
+/src/public/assets/js/app.js
+/src/public/assets/js/app.js.map

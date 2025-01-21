@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 Anthony S. All rights reserved.
+ */
+
 const path = require('path');
 
 module.exports = {
@@ -5,10 +9,8 @@ module.exports = {
 		'/src/public/assets/js/app.js': [
 			'./src/assets/js/app.ts',
 			'./src/assets/js/declare.ts',
-		],
-		'/src/public/assets/css/app.css': [
 			'./src/assets/scss/app.scss',
-		],
+		]
 	},
 	output: {
 		filename: '[name]',
