@@ -58,7 +58,7 @@ export default class ServerController {
 			description: "",
 			logo: "https://augo.pw/assets/images/logo.png",
 			logoMini: "https://augo.pw/assets/media/logos/favicon.ico",
-			icon: "https://augo.pw/assets/media/logos/favicon.ico",
+			icon: "https://cdn.discordapp.com/attachments/786478018138603562/1331184236283170857/Untitled-1.png?ex=6790b16e&is=678f5fee&hm=94f25aebdd4624aef42a653a4380bc2284f7ffc1e9364203ff549a034fdb4bdf&",
 			background: "",
 			themeColor: "",
 		},
