@@ -2,8 +2,8 @@
   "name": "salsicha-site",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/server.ts"
+    "dev": "bun run --watch src/server.ts",
+    "build": "webpack --mode development"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
@@ -12,6 +12,11 @@
   "module": "src/index.js",
   "dependencies": {
     "ejs": "^3.1.10",
-    "reflect-metadata": "^0.2.2"
+    "node-sass": "^9.0.0",
+    "reflect-metadata": "^0.2.2",
+    "sass-loader": "^16.0.4",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   }
 }
