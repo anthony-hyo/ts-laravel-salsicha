@@ -5,6 +5,7 @@
 import path from "path";
 import ejs from "ejs";
 import ServerApp from "../../server";
+import {ejsOptions} from "../../config/config";
 
 /**
  * Renderer class is responsible for rendering different types of responses.
@@ -25,13 +26,8 @@ export default class Renderer {
 	 * const response = await Renderer.view('index', { title: 'Home' });
 	 */
 	public static async view(view: string, data: any = {}, statusCode: number = 200): Promise<Response> {
-		return this.html(await ejs.renderFile(`${view}.ejs`, data, {
-			root: ServerApp.viewsPath,
-			cache: true,
-			compileDebug: false,
-			strict: true,
-			rmWhitespace: true
-		}), statusCode);
+		const filePath: string = path.resolve(ServerApp.viewsPath, `${view}.ejs`);
+		return this.html(await ejs.renderFile(filePath, data, ejsOptions), statusCode);
 	}
 
 	/**
