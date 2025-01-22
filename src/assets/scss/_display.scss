@@ -1,0 +1,132 @@
+.d-block {
+    display: block !important; //scss-lint:disable ImportantRule
+}
+
+.d-none {
+    display: none !important; //scss-lint:disable ImportantRule
+}
+
+.d-flex {
+    display: flex !important; //scss-lint:disable ImportantRule
+}
+
+.d-inline-flex {
+    display: inline-grid !important; //scss-lint:disable ImportantRule
+}
+
+.justify-content-start {
+    justify-content: flex-start !important; //scss-lint:disable ImportantRule
+}
+
+.justify-content-end {
+    justify-content: flex-end !important; //scss-lint:disable ImportantRule
+}
+
+.justify-content-center {
+    justify-content: center !important; //scss-lint:disable ImportantRule
+}
+
+.justify-content-between {
+    justify-content: space-between !important; //scss-lint:disable ImportantRule
+}
+
+.justify-content-around {
+    justify-content: space-around !important; //scss-lint:disable ImportantRule
+}
+
+.align-items-start {
+    align-items: flex-start !important; //scss-lint:disable ImportantRule
+}
+
+.align-items-end {
+    align-items: flex-end !important; //scss-lint:disable ImportantRule
+}
+
+.align-items-center {
+    align-items: center !important; //scss-lint:disable ImportantRule
+}
+
+.align-items-baseline {
+    align-items: baseline !important; //scss-lint:disable ImportantRule
+}
+
+.align-items-stretch {
+    align-items: stretch !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-start {
+    align-content: flex-start !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-end {
+    align-content: flex-end !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-center {
+    align-content: center !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-between {
+    align-content: space-between !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-around {
+    align-content: space-around !important; //scss-lint:disable ImportantRule
+}
+
+.align-content-stretch {
+    align-content: stretch !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-auto {
+    align-self: auto !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-start {
+    align-self: flex-start !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-end {
+    align-self: flex-end !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-center {
+    align-self: center !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-baseline {
+    align-self: baseline !important; //scss-lint:disable ImportantRule
+}
+
+.align-self-stretch {
+    align-self: stretch !important; //scss-lint:disable ImportantRule
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-start {
+    text-align: left;
+}
+
+.text-end {
+    text-align: right;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.img-fluid {
+    height: auto;
+    max-width: 100%;
+}

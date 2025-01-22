@@ -6,7 +6,10 @@
 	display: none;
 }
 
+@import 'display';
+@import 'grid';
 @import 'launcher';
+@import 'spacing';
 
 ::-webkit-scrollbar {
 	width: 2px;
