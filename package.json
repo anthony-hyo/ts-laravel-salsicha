@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "bun run --watch src/server.ts",
-    "build": "webpack --mode development"
+    "build": "webpack --mode development",
+    "studio": "prisma studio"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
     "bun-types": "latest"
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "css-loader": "^7.1.2",
     "ejs": "^3.1.10",
     "node-sass": "^9.0.0",
+    "prisma": "^6.2.1",
     "reflect-metadata": "^0.2.2",
     "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
