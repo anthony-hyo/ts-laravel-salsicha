@@ -23,7 +23,7 @@ interface IServer {
 
 export default class ServerController {
 
-	@Route("launcher/home", RequestMethod.GET, [logger])
+	@Route("/launcher/home", RequestMethod.GET, [logger])
 	async index(request: Request): Promise<Response> {
 		return await Renderer.view('launcher/home');
 	}
