@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "bun run --watch src/server.ts",
-    "build": "webpack --mode development",
-    "studio": "prisma studio"
+    "build": "webpack --mode production",
+    "start": "bun run build && bun run dev",
+
+    "docker:dev": "bun run --watch src/server.ts",
+    "docker:build": "webpack --mode production",
+
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
