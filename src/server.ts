@@ -79,6 +79,7 @@ export default class ServerApp {
 					return Renderer.serverError();
 				}
 			},
+			hostname: '0.0.0.0',
 			port: 3000,
 		});
 
