@@ -68,13 +68,11 @@ export default class LauncherController {
 
 		this.games.forEach((game, index) => {
 			const img = document.createElement('img');
+
 			img.src = game.icon;
 			img.alt = game.name;
 
 			img.dataset.index = index.toString();
-
-			img.setAttribute('data-tooltip', game.name);
-			img.setAttribute('data-position', 'right');
 
 			if (index === 0) {
 				img.classList.add('selected');
@@ -83,7 +81,13 @@ export default class LauncherController {
 			}
 
 			img.addEventListener('click', (event) => this.handleGameSelection(event));
-			fragment.appendChild(img);
+
+			const div = document.createElement('div');
+			div.setAttribute('data-tooltip', game.name);
+			div.setAttribute('data-placement', 'right');
+			div.appendChild(img);
+
+			fragment.appendChild(div);
 		});
 
 		this.sidebar.appendChild(fragment);
