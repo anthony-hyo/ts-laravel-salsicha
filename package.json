@@ -5,10 +5,8 @@
     "dev": "bun run --watch src/server.ts",
     "build": "webpack --mode production",
     "start": "bun src/server.ts",
-
     "docker:dev": "bun run --watch src/server.ts",
     "docker:build": "webpack --mode production",
-
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
@@ -22,7 +20,6 @@
     "@prisma/client": "^6.2.1",
     "css-loader": "^7.1.2",
     "ejs": "^3.1.10",
-    "node-sass": "^9.0.0",
     "normalize.css": "^8.0.1",
     "prisma": "^6.2.1",
     "reflect-metadata": "^0.2.2",
