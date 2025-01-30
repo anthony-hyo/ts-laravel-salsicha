@@ -9,144 +9,80 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 		<script type="text/javascript" src="/assets/js/app.js?<%= Math.floor(Date.now() / 100); %>"></script>
+
+		<style>
+
+
+			[data-tooltip] {
+				position: relative;
+				cursor: pointer;
+			}
+
+			[data-tooltip]::after {
+				content: attr(data-tooltip);
+				visibility: hidden;
+				opacity: 0;
+				position: absolute;
+				background-color: rgba(0, 0, 0, 0.8);
+				color: white;
+				border-radius: 5px;
+				padding: 8px;
+				font-size: 14px;
+				max-width: 250px;
+				white-space: nowrap;
+				transition: opacity 0.3s, transform 0.3s;
+			}
+
+			[data-tooltip]:hover::after {
+				visibility: visible;
+				opacity: 1;
+			}
+
+			[data-tooltip][data-position="right"]::after {
+				left: 100%;
+				top: 50%;
+				transform: translateY(-50%) translateX(10px);
+			}
+
+			[data-tooltip][data-position="left"]::after {
+				right: 100%;
+				top: 50%;
+				transform: translateY(-50%) translateX(-10px);
+			}
+
+			[data-tooltip][data-position="top"]::after {
+				bottom: 100%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-10px);
+			}
+
+			[data-tooltip][data-position="bottom"]::after {
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%) translateY(10px);
+			}
+		</style>
 	</head>
 <body>
 	<div class="overlay"></div>
 
 	<div class="launcher-container">
 		<div class="sidebar">
-			<button id="menuToggleButton" class="d-none"><span class="material-icons">menu</span></button>
+			<button class="d-none"><span class="material-icons">menu</span></button>
 		</div>
 
 		<div class="main-content">
 			<img src="https://example.com/game1-logo.png" alt="Game Logo">
-			<p>Experience the adventure of a lifetime in this thrilling game.</p>
-			<button>Play Now</button>
+			<p data-tooltip="This is a tooltip on the top" data-position="top" >Experience the adventure of a lifetime in this thrilling game.</p>
+
+			<div>
+				<a class="btn btn-lg btn-primary" target="_blank" id="btn-play-now">Play Now</a>
+			</div>
 		</div>
 
 		<div class="game-list hidden">
 			<div class="overlay"></div>
 		</div>
 	</div>
-
-	<script>
-		function makeTransparent(color, percentage) {
-			const rgba = color.match(/^#([0-9A-Fa-f]{6})$/);
-			if (rgba) {
-				const hex = rgba[1];
-				const r = parseInt(hex.substring(0, 2), 16);
-				const g = parseInt(hex.substring(2, 4), 16);
-				const b = parseInt(hex.substring(4, 6), 16);
-				return `rgba(${r}, ${g}, ${b}, ${percentage})`;
-			}
-			return color;
-		}
-
-		const sidebar = document.querySelector('.sidebar');
-		const gameLogo = document.querySelector('.main-content img');
-		const gameBackgroundOverlay = document.querySelector('.overlay');
-		const gameDescription = document.querySelector('.main-content p');
-		const playButton = document.querySelector('.main-content button');
-		const mainContent = document.querySelector('.main-content');
-		const gameList = document.querySelector('.game-list');
-		const menuToggleButton = document.getElementById('menuToggleButton');
-
-		let games = [];
-
-		async function fetchServers() {
-			const response = await fetch('/api/servers');
-
-			const data = await response.json();
-
-			games = data.data.map(server => ({
-				url: server.url,
-				name: server.name,
-				description: server.description,
-				logo: server.logo,
-				logoMini: server.logoMini,
-				icon: server.icon,
-				background: server.background,
-				themeColor: server.themeColor,
-			}));
-
-			renderSidebar();
-			setGameState(games[0])
-		}
-
-		function renderSidebar() {
-			const fragment = document.createDocumentFragment();
-
-			games.forEach((game, index) => {
-				const img = document.createElement('img');
-				img.src = game.icon;
-				img.alt = game.name;
-				img.dataset.index = index;
-
-				if (index === 0) {
-					img.classList.add('selected');
-					img.style.backgroundColor = game.themeColor;
-					img.style.borderColor = game.themeColor;
-				}
-
-				img.addEventListener('click', handleGameSelection);
-				fragment.appendChild(img);
-			});
-
-			sidebar.appendChild(fragment);
-		}
-
-		function handleGameSelection(event) {
-			const index = event.target.dataset.index;
-			const game = games[index];
-
-			document.querySelector('.sidebar img.selected').classList.remove('selected');
-
-			event.target.classList.add('selected');
-			event.target.style.backgroundColor = game.themeColor;
-			event.target.style.borderColor = game.themeColor;
-
-			setGameState(game)
-		}
-
-		function setGameState(game) {
-			document.body.style.backgroundImage = `url(${game.background})`;
-
-			gameLogo.src = game.logo;
-			gameDescription.textContent = game.description;
-			gameBackgroundOverlay.style.backgroundColor = makeTransparent(game.themeColor, 0.07);
-			playButton.style.background = game.themeColor;
-		}
-
-		menuToggleButton.addEventListener('click', () => {
-			mainContent.classList.toggle('hidden');
-			gameList.classList.toggle('hidden');
-
-			if (!gameList.querySelector('.game-item')) {
-				renderGameCards();
-			}
-		});
-
-		function renderGameCards() {
-			const gameCards = document.createElement('div');
-			gameCards.style.display = 'flex';
-			gameCards.style.flexWrap = 'wrap';
-			gameCards.style.justifyContent = 'center';
-
-			games.forEach(game => {
-				const card = document.createElement('div');
-				card.classList.add('game-item');
-				card.innerHTML = `
-					<img src="${game.logoMini}" alt="${game.name}">
-					<h3>${game.name}</h3>
-					<button style="background:${game.themeColor}">Play Now</button>
-				`;
-				gameCards.appendChild(card);
-			});
-
-			gameList.appendChild(gameCards);
-		}
-
-		fetchServers();
-	</script>
 </body>
 </html>

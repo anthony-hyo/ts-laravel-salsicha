@@ -2,23 +2,77 @@
  * Copyright (c) 2025 Anthony S. All rights reserved.
  */
 
-.hidden {
-	display: none;
+$primary: #cf1717;
+$secondary: #fbcb00;
+$tertiary: #18191b;
+
+$black: #000;
+$white: #fff;
+
+$danger: #f44336;
+$success: #4caf50;
+$info: #2196f3;
+$warning: #ff9800;
+
+$colors: (
+	'primary': $primary,
+	'primary-secondary': $secondary,
+	'primary-tertiary': $tertiary,
+
+	'black': $black,
+	'white': $white,
+
+	'danger': $danger,
+	'success': $success,
+	'info': $info,
+	'warning': $warning,
+);
+
+:root {
+	--primary-color: #cf1717;
+	--secondary-color: #fbcb00;
+	--tertiary-color: #18191b;
+
+	--black-color: #000;
+	--white-color: #fff;
+
+	--danger-color: #f44336;
+	--success-color: #4caf50;
+	--info-color: #2196f3;
+	--warning-color: #ff9800;
+
+	--default-border-radius: 0.35rem;
+	--default-font-weight: 500;
 }
 
+$default-border-radius: 0.35rem;
+$default-font-weight: 500;
+
+@import 'functions';
+
+@import 'button';
 @import 'display';
 @import 'grid';
 @import 'launcher';
 @import 'spacing';
+
+.hidden {
+	display: none;
+}
+
+::selection {
+	background-color: var(--tertiary-color);
+	color: var(--white);
+}
 
 ::-webkit-scrollbar {
 	width: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #ff5722;
+	background-color: var(--primary-color);
 }
 
 ::-webkit-scrollbar-track {
-	background: rgba(0, 0, 0, 0.2);
+	background: var(--tertiary-color);
 }
