@@ -5,7 +5,6 @@
 import RequestMethod from "../enums/RequestMethod";
 import Helper from "../helpers/Helper";
 import {Route} from "../decorators/Route";
-import {logger} from "../middlewares/logger";
 import Renderer from "../helpers/Renderer";
 import Database from "../prisma/PrismaClient";
 import {PrismaClient} from "@prisma/client";
@@ -23,12 +22,12 @@ interface IServer {
 
 export default class ServerController {
 
-	@Route("/launcher/home", RequestMethod.GET, [logger])
+	@Route("/launcher/home", RequestMethod.GET)
 	async index(request: Request): Promise<Response> {
 		return await Renderer.view('launcher/home');
 	}
 
-	@Route("/api/servers", RequestMethod.GET, [logger])
+	@Route("/api/servers", RequestMethod.GET)
 	async getServers(request: Request): Promise<Response> {
 		const prisma: PrismaClient = Database.prisma;
 
@@ -48,7 +47,7 @@ export default class ServerController {
 		});
 	}
 
-	@Route("/api/servers/update", RequestMethod.GET, [logger])
+	@Route("/api/servers/update", RequestMethod.GET)
 	async updateServers(request: Request): Promise<Response> {
 		const prisma: PrismaClient = Database.prisma;
 

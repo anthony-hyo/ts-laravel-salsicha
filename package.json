@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "bun run --watch src/server.ts",
     "build": "webpack --mode production",
-    "start": "bun run build && bun run dev",
+    "start": "bun src/server.ts",
 
     "docker:dev": "bun run --watch src/server.ts",
     "docker:build": "webpack --mode production",

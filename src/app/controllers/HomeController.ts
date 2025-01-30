@@ -4,7 +4,6 @@
 
 import RequestMethod from "../enums/RequestMethod";
 import {Route} from "../decorators/Route";
-import {logger} from "../middlewares/logger";
 import Renderer from "../helpers/Renderer";
 
 interface IServer {
@@ -20,7 +19,7 @@ interface IServer {
 
 export default class HomeController {
 
-	@Route("/", RequestMethod.GET, [logger])
+	@Route("/", RequestMethod.GET)
 	async index(request: Request): Promise<Response> {
 		return await Renderer.view('home');
 	}
