@@ -8,8 +8,8 @@ A simple, lightweight **TypeScript** web framework built on **Bun** inspired by 
 Fast, minimal, and developer-friendly with decorators, Prisma integration, and easy response rendering.
 
 > ⚡ Note: This framework was used in the Salsicha Launcher project for building its home page, server list API, and dynamic rendering.
-> 
-## 📷 Preview
+
+#### 📷 Preview
 
 Here’s a preview of the **Launcher Home Page**:
 
