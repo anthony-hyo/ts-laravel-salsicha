@@ -13,7 +13,7 @@ Fast, minimal, and developer-friendly with decorators, Prisma integration, and e
 
 Here’s a preview of the **Launcher Home Page**:
 
-![Salsicha Launcher Preview](./preview.gif)
+<img src="./preview_1.gif" alt="Preview" width="auto" height="250">
 
 ---
 
